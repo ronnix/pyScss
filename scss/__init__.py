@@ -261,6 +261,20 @@ _colors = {
     'yellowgreen': '#9acd32'
 }
 
+_KNOWN_FUNCTIONS = (
+    '-moz-linear-gradient',
+    '-webkit-gradient',
+    'attr',
+    'color-stop',
+    'format',
+    'from',
+    'mask',
+    'rect',
+    'rotate',
+    'to',
+    'url',
+)
+
 _safe_strings = {
     '^doubleslash^': '//',
     '^bigcopen^': '/*',
@@ -3903,7 +3917,7 @@ def call(name, args, R, is_function=True):
     except KeyError:
         sp = args and args.value.get('_') or ''
         if is_function:
-            if _name not in ('url', 'mask', 'rotate', 'format'):
+            if _name not in _KNOWN_FUNCTIONS:
                 log.error("Required function not found (\"%s\"): %s", R[FILE], _fn_a)
             _args = (sp + ' ').join( to_str(v) for n,v in s if isinstance(n, int) )
             _kwargs = (sp + ' ').join( '%s: %s' % (n, to_str(v)) for n,v in s if not isinstance(n, int) and n != '_' )
